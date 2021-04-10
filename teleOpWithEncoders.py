@@ -1,10 +1,11 @@
   
-import RPi.GPIO as GPIO
+import RPi.GPIO as gpio
 import numpy as np
 import time
 import cv2
 import os
 import imutils
+import math
 
 trig = 16
 echo = 18
@@ -33,49 +34,49 @@ def gameover():
 
 
 def forward(maxTicks):
-	init()
-	counterBR = np.uint64(0)
-	counterFL = np.uint64(0)
+    init()
+    counterBR = np.uint64(0)
+    counterFL = np.uint64(0)
 
-	buttonBR = int(0)
-	buttonFL = int(0)
+    buttonBR = int(0)
+    buttonFL = int(0)
 
-	# Initialize pwm signal to control motor
-	pwm1 = gpio.PWM(37, 50) #Right side
-	pwm2 = gpio.PWM(31, 50) #Left side
-	val = 22
-	pwm1.start(val)
-	pwm2.start(val)
-	time.sleep(0.1)
+    # Initialize pwm signal to control motor
+    pwm1 = gpio.PWM(37, 50) #Right side
+    pwm2 = gpio.PWM(31, 50) #Left side
+    val = 22
+    pwm1.start(val)
+    pwm2.start(val)
+    time.sleep(0.1)
 
 
-	while True:
-	    #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
-	    file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
-	    if int(gpio.input(12)) != int(buttonBR):
-	        buttonBR = int(gpio.input(12))
-	        counterBR += 1
-	        
-	    if int(gpio.input(7)) != int(buttonFL):
-	        buttonFL = int(gpio.input(7))
-	        counterFL += 1
-	        #print(counter)
-	        
-	    if counterBR >= maxTicks:
-	        pwm1.stop()
-	        
-	    if counterFL >= maxTicks:
-	        pwm2.stop()
-	        
-	    if counterFL >= maxTicks and counterBR >= maxTicks:
-	        pwm1.stop()
-	        pwm2.stop()
-	        gameover()
-	        break
+    while True:
+        #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
+        file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
+        if int(gpio.input(12)) != int(buttonBR):
+            buttonBR = int(gpio.input(12))
+            counterBR += 1
+            
+        if int(gpio.input(7)) != int(buttonFL):
+            buttonFL = int(gpio.input(7))
+            counterFL += 1
+            #print(counter)
+            
+        if counterBR >= maxTicks:
+            pwm1.stop()
+            
+        if counterFL >= maxTicks:
+            pwm2.stop()
+            
+        if counterFL >= maxTicks and counterBR >= maxTicks:
+            pwm1.stop()
+            pwm2.stop()
+            gameover()
+            break
 
     # init()
     # # Left wheels
-    # GPIO.output(31, True) 
+    # gpio.output(31, True) 
     # GPIO.output(33, False) 
     # # Right wheels
     # GPIO.output(35, False) 
@@ -89,44 +90,44 @@ def forward(maxTicks):
 
 def reverse(maxTicks):
     init()
-	counterBR = np.uint64(0)
-	counterFL = np.uint64(0)
+    counterBR = np.uint64(0)
+    counterFL = np.uint64(0)
 
-	buttonBR = int(0)
-	buttonFL = int(0)
+    buttonBR = int(0)
+    buttonFL = int(0)
 
-	# Initialize pwm signal to control motor
-	pwm1 = gpio.PWM(33, 50) #Right side
-	pwm2 = gpio.PWM(35, 50) #Left side
-	val = 22
-	pwm1.start(val)
-	pwm2.start(val)
-	time.sleep(0.1)
+    # Initialize pwm signal to control motor
+    pwm1 = gpio.PWM(33, 50) #Right side
+    pwm2 = gpio.PWM(35, 50) #Left side
+    val = 22
+    pwm1.start(val)
+    pwm2.start(val)
+    time.sleep(0.1)
 
 
-	while True:
-	    #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
-	    file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
-	    if int(gpio.input(12)) != int(buttonBR):
-	        buttonBR = int(gpio.input(12))
-	        counterBR += 1
-	        
-	    if int(gpio.input(7)) != int(buttonFL):
-	        buttonFL = int(gpio.input(7))
-	        counterFL += 1
-	        #print(counter)
-	        
-	    if counterBR >= maxTicks:
-	        pwm1.stop()
-	        
-	    if counterFL >= maxTicks:
-	        pwm2.stop()
-	        
-	    if counterFL >= maxTicks and counterBR >= maxTicks:
-	        pwm1.stop()
-	        pwm2.stop()
-	        gameover()
-	        break
+    while True:
+        #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
+        file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
+        if int(gpio.input(12)) != int(buttonBR):
+            buttonBR = int(gpio.input(12))
+            counterBR += 1
+            
+        if int(gpio.input(7)) != int(buttonFL):
+            buttonFL = int(gpio.input(7))
+            counterFL += 1
+            #print(counter)
+            
+        if counterBR >= maxTicks:
+            pwm2.stop()
+            
+        if counterFL >= maxTicks:
+            pwm1.stop()
+            
+        if counterFL >= maxTicks and counterBR >= maxTicks:
+            pwm1.stop()
+            pwm2.stop()
+            gameover()
+            break
     # # Left wheels
     # GPIO.output(31, False) 
     # GPIO.output(33, True) 
@@ -143,43 +144,43 @@ def reverse(maxTicks):
 def pivotright(maxTicks):
     init()
     counterBR = np.uint64(0)
-	counterFL = np.uint64(0)
+    counterFL = np.uint64(0)
 
-	buttonBR = int(0)
-	buttonFL = int(0)
+    buttonBR = int(0)
+    buttonFL = int(0)
 
-	# Initialize pwm signal to control motor
-	pwm1 = gpio.PWM(31, 50) #Right side
-	pwm2 = gpio.PWM(35, 50) #Left side
-	val = 22
-	pwm1.start(val)
-	pwm2.start(val)
-	time.sleep(0.1)
+    # Initialize pwm signal to control motor
+    pwm1 = gpio.PWM(31, 50) #Right side
+    pwm2 = gpio.PWM(35, 50) #Left side
+    val = 60
+    pwm1.start(val)
+    pwm2.start(val)
+    time.sleep(0.1)
 
 
-	while True:
-	    #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
-	    file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
-	    if int(gpio.input(12)) != int(buttonBR):
-	        buttonBR = int(gpio.input(12))
-	        counterBR += 1
-	        
-	    if int(gpio.input(7)) != int(buttonFL):
-	        buttonFL = int(gpio.input(7))
-	        counterFL += 1
-	        #print(counter)
-	        
-	    # if counterBR >= maxTicks:
-	    #     pwm1.stop()
-	        
-	    if counterFL >= maxTicks:
-	   #     pwm2.stop()
-	        
-	   # if counterFL >= maxTicks and counterBR >= maxTicks:
-	        pwm1.stop()
-	        pwm2.stop()
-	        gameover()
-	        break
+    while True:
+        #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
+        file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
+        if int(gpio.input(12)) != int(buttonBR):
+            buttonBR = int(gpio.input(12))
+            counterBR += 1
+            
+        if int(gpio.input(7)) != int(buttonFL):
+            buttonFL = int(gpio.input(7))
+            counterFL += 1
+            #print(counter)
+            
+        # if counterBR >= maxTicks:
+        #     pwm1.stop()
+            
+        if counterFL >= maxTicks:
+       #     pwm2.stop()
+            
+       # if counterFL >= maxTicks and counterBR >= maxTicks:
+            pwm1.stop()
+            pwm2.stop()
+            gameover()
+            break
     # Left wheels
     # GPIO.output(31, True)
     # GPIO.output(33, False)
@@ -196,46 +197,46 @@ def pivotright(maxTicks):
 def pivotleft(maxTicks):
     init()
     counterBR = np.uint64(0)
-	counterFL = np.uint64(0)
+    counterFL = np.uint64(0)
 
-	buttonBR = int(0)
-	buttonFL = int(0)
+    buttonBR = int(0)
+    buttonFL = int(0)
 
-	# Initialize pwm signal to control motor
-	pwm1 = gpio.PWM(33, 50) #Right side
-	pwm2 = gpio.PWM(37, 50) #Left side
-	val = 22
-	pwm1.start(val)
-	pwm2.start(val)
-	time.sleep(0.1)
+    # Initialize pwm signal to control motor
+    pwm1 = gpio.PWM(33, 50) #Right side
+    pwm2 = gpio.PWM(37, 50) #Left side
+    val = 60
+    pwm1.start(val)
+    pwm2.start(val)
+    time.sleep(0.1)
 
 
-	while True:
-	    #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
-	    file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
-	    if int(gpio.input(12)) != int(buttonBR):
-	        buttonBR = int(gpio.input(12))
-	        counterBR += 1
-	        
-	    if int(gpio.input(7)) != int(buttonFL):
-	        buttonFL = int(gpio.input(7))
-	        counterFL += 1
-	        #print(counter)
-	        
-	    # if counterBR >= maxTicks:
-	    #     pwm1.stop()
-	        
-	    if counterFL >= maxTicks:
-	    	pwm1.stop()
-	        pwm2.stop()
-	        gameover()
-	        break
-	        
-	    # if counterFL >= maxTicks and counterBR >= maxTicks:
-	    #     pwm1.stop()
-	    #     pwm2.stop()
-	    #     gameover()
-	    #     break
+    while True:
+        #print("counterBR = ", counterBR,"counterFL = ", counterFL, "BR state: ", gpio.input(12), "FL state: ", gpio.input(7))
+        file.write(str(counterBR)+","+str(counterFL)+","+str(gpio.input(12))+","+str(gpio.input(7))+'\n')
+        if int(gpio.input(12)) != int(buttonBR):
+            buttonBR = int(gpio.input(12))
+            counterBR += 1
+            
+        if int(gpio.input(7)) != int(buttonFL):
+            buttonFL = int(gpio.input(7))
+            counterFL += 1
+            #print(counter)
+            
+        # if counterBR >= maxTicks:
+        #     pwm1.stop()
+            
+        if counterFL >= maxTicks:
+            pwm1.stop()
+            pwm2.stop()
+            gameover()
+            break
+            
+        # if counterFL >= maxTicks and counterBR >= maxTicks:
+        #     pwm1.stop()
+        #     pwm2.stop()
+        #     gameover()
+        #     break
     # # Left wheels
     # GPIO.output(31, False)
     # GPIO.output(33, True)
@@ -249,10 +250,10 @@ def pivotleft(maxTicks):
     # GPIO.cleanup()
     
 def closeGripper():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(36, GPIO.OUT)  #Gripper
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(36, gpio.OUT)  #Gripper
     
-    pwm = GPIO.PWM(36, 50)
+    pwm = gpio.PWM(36, 50)
     pwm.start(5)
     
     rate = 0.15
@@ -268,10 +269,10 @@ def closeGripper():
     #GPIO.cleanup() 
 
 def openGripper():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(36, GPIO.OUT)  #Gripper
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(36, gpio.OUT)  #Gripper
     
-    pwm = GPIO.PWM(36, 50)
+    pwm = gpio.PWM(36, 50)
     pwm.start(5)
     
     rate = 0.15
@@ -287,24 +288,24 @@ def openGripper():
     #GPIO.cleanup() 
             
 def distance():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(trig, GPIO.OUT)
-    GPIO.setup(echo, GPIO.IN)
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(trig, gpio.OUT)
+    gpio.setup(echo, gpio.IN)
     
     #Ensure outout has no value
-    GPIO.output(trig, False)
+    gpio.output(trig, False)
     time.sleep(0.01)
 
     #Generate Trigger pulse
-    GPIO.output(trig, True)
+    gpio.output(trig, True)
     time.sleep(0.00001)
-    GPIO.output(trig, False)
+    gpio.output(trig, False)
 
     #Generate Echo time signal
-    while GPIO.input(echo) == 0:
+    while gpio.input(echo) == 0:
         pulse_start = time.time()
 
-    while GPIO.input(echo) == 1:
+    while gpio.input(echo) == 1:
         pulse_end = time.time()
 
     pulse_duration = pulse_end - pulse_start
@@ -314,7 +315,7 @@ def distance():
     distance = round(distance, 2)
         
     #clear the output pins
-    GPIO.cleanup()        
+    gpio.cleanup()        
     return distance
 
 def key_input(event):
@@ -323,24 +324,24 @@ def key_input(event):
     key_press = event
     
     if key_press.lower() == 'w':
-    	x = input('Enter distance in meters:')
-    	dist = float(x)
-    	maxticks = 98 * dist
+        x = input('Enter distance in meters:')
+        dist = float(x)
+        maxticks = 98 * dist
         forward(maxticks)
     elif key_press.lower() == 's':
-    	x = input('Enter distance in meters:')
-    	dist = float(x)
-    	maxticks = 98 * dist
+        x = input('Enter distance in meters:')
+        dist = float(x)
+        maxticks = 98 * dist
         reverse(maxticks)
     elif key_press.lower() == 'a':
-    	x = input('Enter angle in degrees:')
-    	angle = float(x)
-    	maxticks = 5.85 * angle
+        x = input('Enter angle in degrees:')
+        angle = float(x)
+        maxticks = math.ceil(0.1444 * angle)
         pivotleft(maxticks)
     elif key_press.lower() == 'd':
-    	x = input('Enter angle in degrees:')
-    	angle = float(x)
-    	maxticks = 5.85 * angle
+        x = input('Enter angle in degrees:')
+        angle = float(x)
+        maxticks = math.ceil(0.1444 * angle)
         pivotright(maxticks)
     elif key_press.lower() == 'x':
         closeGripper()
@@ -361,7 +362,7 @@ if __name__ == '__main__':
     while True:
         key_press = input("Select driving mode: ")
         if key_press == 'q':
-            GPIO.cleanup()
+            gpio.cleanup()
             file.close()
             break
-        key_input(key_press
+        key_input(key_press)
