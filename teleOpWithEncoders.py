@@ -44,7 +44,7 @@ def forward(maxTicks):
     # Initialize pwm signal to control motor
     pwm1 = gpio.PWM(37, 50) #Right side
     pwm2 = gpio.PWM(31, 50) #Left side
-    val = 22
+    val = 40
     pwm1.start(val)
     pwm2.start(val)
     time.sleep(0.1)
@@ -99,7 +99,7 @@ def reverse(maxTicks):
     # Initialize pwm signal to control motor
     pwm1 = gpio.PWM(33, 50) #Right side
     pwm2 = gpio.PWM(35, 50) #Left side
-    val = 22
+    val = 40
     pwm1.start(val)
     pwm2.start(val)
     time.sleep(0.1)
